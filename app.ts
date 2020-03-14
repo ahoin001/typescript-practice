@@ -4,21 +4,34 @@
 
 
 // * NOTE Hover over person, objects are key->type pairs, not key -> value pairs in typescript, it will not be reassignable to another value
-const person: {
-    name: string;
-    age: number;
-    hobbies: string[];
-    // * Tells typescript this is a tuple with two types
-    role: [number, string];  
-} = {
+// const person: {
+//     name: string;
+//     age: number;
+//     hobbies: string[];
+//     // * Tells typescript this is a tuple with two types
+//     role: [number, string];  
+// } = {
+//     name: 'Alexander',
+//     age: 24,
+//     hobbies: ['Coding', 'Basketball'],
+//     role: [2, `author`]
+// }
+
+// * ENUM type from typescript assigns labels to numbers Ex/ Role.ADMIN = 0 in this case 
+enum Role { ADMIN, READ_ONLY, AUTHOR }
+// * Can assign custom number or text, number will increment as it increases
+enum Role2 { ADMIN = 10, READ_ONLY = 'RO', AUTHOR = 100 }
+
+const person = {
     name: 'Alexander',
     age: 24,
     hobbies: ['Coding', 'Basketball'],
-    role: [2, `author`]
+    role: Role.ADMIN
 }
 
+
 // .push still works on tuples
-person.role.push('admin');
+// person.role.push('admin');
 
 // Will cause Error because [1] is expected to be a string
 // person.role[1] = 10;
