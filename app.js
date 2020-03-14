@@ -5,11 +5,19 @@ var person = {
     age: 24,
     hobbies: ['Coding', 'Basketball']
 };
+// Declare an array of strings
 var favoriteActivities;
 favoriteActivities = ['Sports', 'Eating'];
-// favoriteActivities = 'Sports'    // Will have error because array of strings will be expected
+// * Will have error because array of strings will be expected
+// favoriteActivities = ['Sports',9]     
+// favoriteActivities = 'Sports'    
 console.log(person.name);
+var i = 0;
 for (var _i = 0, _a = person.hobbies; _i < _a.length; _i++) {
     var hobby = _a[_i];
-    console.log(hobby.toUpperCase());
+    i++;
+    // Safe to use toUpperCase method from screen because using typescript inference it knows that hobby will be a string from array of strings
+    console.log("Hobby #" + i + ": " + hobby.toUpperCase());
+    // * This would be error because TS would epect hobby to be a string, because it knows hobbies is an array of strings
+    // console.log(hobby.map())
 }
