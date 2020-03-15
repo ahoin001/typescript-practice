@@ -1,10 +1,16 @@
 // * Union Type: A variable can be more than 1 type
 
+//  * Custom Type : Type script will expect these types or literal types
+type Combinable = number | string;
+type ConversionDescription = 'as-number' | 'as-text'
+
 const combine = (
-    input1: number | string,
-    input2: number | string,
-    // * Literal Type: Will expect one of these values of this type (Also a union type)
-    resultType: 'as-number' | 'as-text' 
+
+    input1: Combinable, // Will benumber | string,
+    input2: Combinable,
+    // * Literal Type: Will expect one of these values and of this type (Also a union type)
+    resultType: ConversionDescription // 'as-number' | 'as-text'
+
 ) => {
 
     let result;

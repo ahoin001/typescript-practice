@@ -1,7 +1,9 @@
 // * Union Type: A variable can be more than 1 type
-var combine = function (input1, input2, 
-// * Literal Type: Will expect one of these values of this type (Also a union type)
-resultType) {
+var combine = function (input1, // Will benumber | string,
+input2, 
+// * Literal Type: Will expect one of these values and of this type (Also a union type)
+resultType // 'as-number' | 'as-text'
+) {
     var result;
     // * This runtime check is used because we ave different logic for different types
     if (typeof input1 === 'number' && typeof input2 === 'number') {
