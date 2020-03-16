@@ -10,4 +10,15 @@ const printResult = (num: number) => {
 }
 
 console.log(printResult(add(5, 12)))
-// printResult(add(5, 12))
+
+// * TS will expect a function to be assigned
+// let combineValues: Function;
+
+// * Ts will expect a function that expects 2 numbers and returns a number
+// * Without this, any function that does anything caan be assigned
+let combineValues: (a: number, b: number) => number;
+
+combineValues = add;
+// combineValues = 5;  // Will be error becuase 5 is a number
+
+console.log(combineValues(9,9))
