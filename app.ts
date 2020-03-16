@@ -9,16 +9,32 @@ const printResult = (num: number) => {
     console.log(`Result: ` + num)
 }
 
-console.log(printResult(add(5, 12)))
+const addAndHanlde = (n1: number, n2: number, cb: (num: number) => void) => {
 
-// * TS will expect a function to be assigned
+    const result = n1 + n2;
+
+    // * Pass result to callback which expects number and to return nothing
+    cb(result);
+
+}
+
+
+// * TS will expect any function to be assigned
 // let combineValues: Function;
 
 // * Ts will expect a function that expects 2 numbers and returns a number
-// * Without this, any function that does anything caan be assigned
+// * Without this, any function that does anything can be assigned
 let combineValues: (a: number, b: number) => number;
 
 combineValues = add;
 // combineValues = 5;  // Will be error becuase 5 is a number
 
-console.log(combineValues(9,9))
+console.log(combineValues(9, 9))
+
+addAndHanlde(10, 20,
+    (result) => {
+
+        // * Recieves result from excecution 
+        console.log(result)
+
+    })
