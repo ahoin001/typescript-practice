@@ -13,3 +13,12 @@ if (typeof userInput === 'string') {
 }
 
 // userName = userInput
+
+//  * This function is for values that never occur, (None of the types, so an error or unexpected return of some sort)
+const generateError = (message: string, code: number): never => {
+    
+    throw {message: message, errorCode: code};
+
+}
+
+generateError('An error occured', 500)
