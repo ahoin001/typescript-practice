@@ -1,40 +1,15 @@
-// * Hover over function to see expected return type
-const add = (n1: number, n2: number) => {
-    return n1 + n2
-}
+let userInput: unknown;
+let userName: string
+// let userName: any
 
-// * Void type means function does no return anything (Use instead of undefined)
-// * Void tells TS we expect to not return anything, undefined is if returning an undefined value whch is a rare case
-const printResult = (num: number) => {
-    console.log(`Result: ` + num)
-}
+// * Unknown can be anything, but only any can be assigned an unknown type
+userInput = 5;
+userInput = 'Alex';
 
-const addAndHanlde = (n1: number, n2: number, cb: (num: number) => void) => {
+if (typeof userInput === 'string') {
 
-    const result = n1 + n2;
-
-    // * Pass result to callback which expects number and to return nothing
-    cb(result);
+    userName = userInput
 
 }
 
-
-// * TS will expect any function to be assigned
-// let combineValues: Function;
-
-// * Ts will expect a function that expects 2 numbers and returns a number
-// * Without this, any function that does anything can be assigned
-let combineValues: (a: number, b: number) => number;
-
-combineValues = add;
-// combineValues = 5;  // Will be error becuase 5 is a number
-
-console.log(combineValues(9, 9))
-
-addAndHanlde(10, 20,
-    (result) => {
-
-        // * Recieves result from excecution 
-        console.log(result)
-
-    })
+// userName = userInput
