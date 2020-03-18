@@ -1,6 +1,7 @@
 // * Class is blueprint to create simalar objects with different information
 
-class Department {
+// * Abstract classes used to be inherited from, while child classes are first to implement blueprint
+abstract class Department {
 
     // * Private makes properties or methods ONLY accessible in the class, in this case, this makes our method the only way to modify this property
     // private employees: string[] = [];
@@ -12,7 +13,7 @@ class Department {
     static fiscalYear: number
 
     // * Shorthand to initialize properties by explicitly naming public or private
-    constructor(private readonly id: string, public department: string, ) {
+    constructor(protected readonly id: string, public department: string, ) {
 
 
     }
@@ -23,9 +24,8 @@ class Department {
     // }
 
     // * When excecuted, the this in method should ALWAYS refer to an instance of Department class, TS will throw in other use cases
-    describe(this: Department) {
-        console.log(`${this.id} : The ${this.department} department`);
-    }
+    // * abstract class methods are created and forced to be override in child classes
+    abstract description(this: Department): void
 
     // * Static methods can be used without creating instance of class
     static createEmployee(name: string) {
@@ -56,6 +56,11 @@ class ITDepartment extends Department {
 
     }
 
+    // * Overwrite abstract method or TS will throw exception
+    description() {
+        console.log(`${this.department} - ID: ${this.id} `)
+    }
+
 }
 
 class AccountDepartment extends Department {
@@ -69,6 +74,11 @@ class AccountDepartment extends Department {
 
         this.lastReport = reports[0]
 
+    }
+
+
+    description() {
+        console.log(`${this.department} - ID: ${this.id} `)
     }
 
     // * Override base class method for this specifc class
