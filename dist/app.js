@@ -8,6 +8,9 @@ class Department {
     describe() {
         console.log(`${this.id} : The ${this.department} department`);
     }
+    static createEmployee(name) {
+        return { name: name };
+    }
     addEmployee(employee) {
         this.employees.push(employee);
     }
@@ -59,10 +62,12 @@ IT.addEmployee('Gavin');
 IT.addEmployee('Chalres');
 IT.department = 'NEW NAME';
 IT.printEmployeeInformation();
-const Account = new AccountDepartment('F1', ['Alex']);
+const Account = new AccountDepartment('A1', ['Alex']);
 Account.addEmployee('Alex');
 Account.addEmployee('Jeffery');
 Account.printEmployeeInformation();
 Account.mostRecentReport;
 Account.mostRecentReport = 'Weekly Report';
+const anEmployee = Department.createEmployee('Stephen');
 console.log(Account);
+console.log(anEmployee);

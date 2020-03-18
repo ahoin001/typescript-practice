@@ -8,6 +8,8 @@ class Department {
     // * Protected is like private, but allows access to classes that extend this class 
     protected employees: string[] = [];
 
+    //  * Static property accessible wuthout creating an instance of class
+    static fiscalYear: number
 
     // * Shorthand to initialize properties by explicitly naming public or private
     constructor(private readonly id: string, public department: string, ) {
@@ -23,6 +25,11 @@ class Department {
     // * When excecuted, the this in method should ALWAYS refer to an instance of Department class, TS will throw in other use cases
     describe(this: Department) {
         console.log(`${this.id} : The ${this.department} department`);
+    }
+
+    // * Static methods can be used without creating instance of class
+    static createEmployee(name: string) {
+        return { name: name }
     }
 
     addEmployee(employee: string) {
@@ -81,7 +88,7 @@ class AccountDepartment extends Department {
     get mostRecentReport() {
 
         if (this.lastReport) {
-            
+
             return this.lastReport
 
         }
@@ -89,7 +96,7 @@ class AccountDepartment extends Department {
         throw new Error('No report available')
 
     }
-    
+
     set mostRecentReport(value: string) {
 
         if (!value) {
@@ -114,7 +121,7 @@ IT.addEmployee('Chalres');
 IT.department = 'NEW NAME'
 IT.printEmployeeInformation();
 
-const Account = new AccountDepartment('F1', ['Alex'])
+const Account = new AccountDepartment('A1', ['Alex'])
 
 Account.addEmployee('Alex');
 Account.addEmployee('Jeffery');
@@ -123,7 +130,11 @@ Account.printEmployeeInformation();
 // * GETTER/SETTER are excecuted as a property
 Account.mostRecentReport;
 Account.mostRecentReport = 'Weekly Report'
+
+// * Static method 
+const anEmployee = Department.createEmployee('Stephen')
 console.log(Account)
+console.log(anEmployee)
 
 // ? Basic class examples
 // let treasury = new Department('D1', 'Treasury');
