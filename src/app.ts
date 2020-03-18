@@ -67,7 +67,11 @@ class AccountDepartment extends Department {
 
     private lastReport: string
 
-    constructor(id: string, private reports: string[]) {
+    // * An instance of the class
+    private static instance : AccountDepartment
+
+    // * Private constructors are used to only
+    private constructor(id: string, private reports: string[]) {
 
         // * Super MUST be called first and is constructor of base class 
         super(id, 'Accounting')
@@ -76,6 +80,16 @@ class AccountDepartment extends Department {
 
     }
 
+    // * Return instance already made or create new one, so only one instance can be made
+    static getInstance() {
+        if(AccountDepartment.instance)
+        {
+            return this.instance
+        }
+
+        this.instance = new AccountDepartment('A1',[])
+        return this.instance
+    }
 
     description() {
         console.log(`${this.department} - ID: ${this.id} `)
@@ -131,20 +145,29 @@ IT.addEmployee('Chalres');
 IT.department = 'NEW NAME'
 IT.printEmployeeInformation();
 
-const Account = new AccountDepartment('A1', ['Alex'])
+// ! Will not work while class has private constructor for singelton pattern
+// const Account = new AccountDepartment('A1', ['Alex'])
 
-Account.addEmployee('Alex');
-Account.addEmployee('Jeffery');
-Account.printEmployeeInformation();
+// Account.addEmployee('Alex');
+// Account.addEmployee('Jeffery');
+// Account.printEmployeeInformation();
 
-// * GETTER/SETTER are excecuted as a property
-Account.mostRecentReport;
-Account.mostRecentReport = 'Weekly Report'
+// // * GETTER/SETTER are excecuted as a property
+// Account.mostRecentReport;
+// Account.mostRecentReport = 'Weekly Report'
+
+// ? Singleton Use
+const Account = AccountDepartment.getInstance()
+const Account2 = AccountDepartment.getInstance()
+
+// * Will bpth refer to the same instance
+console.log(Account,Account2)
 
 // * Static method 
 const anEmployee = Department.createEmployee('Stephen')
-console.log(Account)
 console.log(anEmployee)
+
+
 
 // ? Basic class examples
 // let treasury = new Department('D1', 'Treasury');

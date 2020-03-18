@@ -5,9 +5,6 @@ class Department {
         this.department = department;
         this.employees = [];
     }
-    describe() {
-        console.log(`${this.id} : The ${this.department} department`);
-    }
     static createEmployee(name) {
         return { name: name };
     }
@@ -24,12 +21,25 @@ class ITDepartment extends Department {
         super(id, 'IT');
         this.admins = admins;
     }
+    description() {
+        console.log(`${this.department} - ID: ${this.id} `);
+    }
 }
 class AccountDepartment extends Department {
     constructor(id, reports) {
         super(id, 'Accounting');
         this.reports = reports;
         this.lastReport = reports[0];
+    }
+    static getInstance() {
+        if (AccountDepartment.instance) {
+            return this.instance;
+        }
+        this.instance = new AccountDepartment('A1', []);
+        return this.instance;
+    }
+    description() {
+        console.log(`${this.department} - ID: ${this.id} `);
     }
     addEmployee(name) {
         if (name == 'Alex') {
@@ -62,12 +72,8 @@ IT.addEmployee('Gavin');
 IT.addEmployee('Chalres');
 IT.department = 'NEW NAME';
 IT.printEmployeeInformation();
-const Account = new AccountDepartment('A1', ['Alex']);
-Account.addEmployee('Alex');
-Account.addEmployee('Jeffery');
-Account.printEmployeeInformation();
-Account.mostRecentReport;
-Account.mostRecentReport = 'Weekly Report';
+const Account = AccountDepartment.getInstance();
+const Account2 = AccountDepartment.getInstance();
+console.log(Account, Account2);
 const anEmployee = Department.createEmployee('Stephen');
-console.log(Account);
 console.log(anEmployee);
