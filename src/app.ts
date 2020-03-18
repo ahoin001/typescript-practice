@@ -3,10 +3,13 @@
 class Department {
 
     // * Private makes properties or methods ONLY accessible in the class, in this case, this makes our method the only way to modify this property
-    private employees: string[] = [];
+    // private employees: string[] = [];
+
+    // * Protected is like private, but allows access to classes that extend this class 
+    protected employees: string[] = [];
 
 
-    // * Shorthand to initialize properties
+    // * Shorthand to initialize properties by explicitly naming public or private
     constructor(private readonly id: string, public department: string, ) {
 
 
@@ -33,21 +36,81 @@ class Department {
 
 }
 
-let treasury = new Department('D1', 'Treasury');
-let accounting = new Department('D2', 'Accounting');
+// * Inheritance
+class ITDepartment extends Department {
+
+    admins: string[];
+    constructor(id: string, admins: string[]) {
+
+        // * Super MUST be called first and is constructor of base class 
+        super(id, 'IT')
+
+        this.admins = admins
+
+    }
+
+}
+
+class AccountDepartment extends Department {
+
+    constructor(id: string, private reports: string[]) {
+
+        // * Super MUST be called first and is constructor of base class 
+        super(id, 'Accounting')
+
+    }
+
+    // * Override base class method for this specifc class
+    addEmployee(name: string) {
+        if (name == 'Alex') {
+            return
+        }
+        this.employees.push(name)
+    }
+
+    addReports(report: string) {
+        this.reports.push(report)
+    }
+
+    printReports() {
+        console.log(`Reports: ${this.reports}`)
+    }
+
+}
+
+// ? Inheritance examples
+const IT = new ITDepartment('F1', ['Alex'])
+
+IT.addEmployee('Gavin');
+IT.addEmployee('Chalres');
+IT.department = 'NEW NAME'
+IT.printEmployeeInformation();
+
+const Account = new AccountDepartment('F1', ['Alex'])
+
+Account.addEmployee('Alex');
+Account.addEmployee('Jeffery');
+Account.printEmployeeInformation();
+
+
+
+// ? Basic class examples
+// let treasury = new Department('D1', 'Treasury');
+// let accounting = new Department('D2', 'Accounting');
 
 
 // * this.name will be unuiqe for each instance
-treasury.describe()
-accounting.describe()
+// treasury.describe()
+// accounting.describe()
 
-treasury.addEmployee('Ryan');
-treasury.addEmployee('Ray');
-treasury.printEmployeeInformation()
-
+// treasury.addEmployee('Ryan');
+// treasury.addEmployee('Ray');
+// treasury.printEmployeeInformation()
 
 
 // * If copy is missing expected properties with expected types, will be undefined because 'this' will not work on anything 
 // * that is not same 'type' as our class
 // const treasurycopy = { department: 'Boss', describe: treasury.describe, }
 // treasurycopy.describe()
+
+
