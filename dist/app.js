@@ -1,22 +1,23 @@
 "use strict";
 class Department {
-    constructor(department) {
-        this.employees = [];
+    constructor(id, department) {
+        this.id = id;
         this.department = department;
+        this.employees = [];
     }
     describe() {
-        console.log(`${this.department} department`);
+        console.log(`${this.id} : The ${this.department} department`);
     }
     addEmployee(employee) {
         this.employees.push(employee);
     }
     printEmployeeInformation() {
-        console.log(this.employees.length);
+        console.log(`${this.employees.length} employees in ${this.department} department`);
         console.log(this.employees);
     }
 }
-let treasury = new Department('Treasury');
-let accounting = new Department('Accounting');
+let treasury = new Department('D1', 'Treasury');
+let accounting = new Department('D2', 'Accounting');
 treasury.describe();
 accounting.describe();
 treasury.addEmployee('Ryan');

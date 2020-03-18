@@ -2,14 +2,13 @@
 
 class Department {
 
-    department: string;
-
     // * Private makes properties or methods ONLY accessible in the class, in this case, this makes our method the only way to modify this property
     private employees: string[] = [];
 
-    constructor(department: string) {
 
-        this.department = department;
+    // * Shorthand to initialize properties
+    constructor(private readonly id: string, public department: string, ) {
+
 
     }
 
@@ -18,9 +17,9 @@ class Department {
     //     console.log(`${this.name} works in ${this.department} department`);
     // }
 
-    // *When excecuted, the this in method should ALWAYS refer to an instance of Department class
+    // * When excecuted, the this in method should ALWAYS refer to an instance of Department class, TS will throw in other use cases
     describe(this: Department) {
-        console.log(`${this.department} department`);
+        console.log(`${this.id} : The ${this.department} department`);
     }
 
     addEmployee(employee: string) {
@@ -28,14 +27,14 @@ class Department {
     }
 
     printEmployeeInformation() {
-        console.log(this.employees.length)
+        console.log(`${this.employees.length} employees in ${this.department} department`)
         console.log(this.employees)
     }
 
 }
 
-let treasury = new Department('Treasury');
-let accounting = new Department('Accounting');
+let treasury = new Department('D1', 'Treasury');
+let accounting = new Department('D2', 'Accounting');
 
 
 // * this.name will be unuiqe for each instance
