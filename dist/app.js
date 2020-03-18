@@ -1,18 +1,24 @@
 "use strict";
 class Department {
-    constructor(name, department) {
-        this.name = name;
+    constructor(department) {
+        this.employees = [];
         this.department = department;
     }
-    description() {
-        console.log(`${this.name} works in ${this.department} department`);
+    describe() {
+        console.log(`${this.department} department`);
+    }
+    addEmployee(employee) {
+        this.employees.push(employee);
+    }
+    printEmployeeInformation() {
+        console.log(this.employees.length);
+        console.log(this.employees);
     }
 }
-let Tony = new Department('Tony', 'Treasury');
-let Ryan = new Department('Ryan', 'Accounting');
-let Bill = new Department('Bill', 'Human Resources');
-Tony.description();
-Ryan.description();
-Bill.description();
-const TonyCopy = { name: 'Tony2', department: 'Boss', description: Tony.description };
-TonyCopy.description();
+let treasury = new Department('Treasury');
+let accounting = new Department('Accounting');
+treasury.describe();
+accounting.describe();
+treasury.addEmployee('Ryan');
+treasury.addEmployee('Ray');
+treasury.printEmployeeInformation();

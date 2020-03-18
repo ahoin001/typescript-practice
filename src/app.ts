@@ -2,39 +2,53 @@
 
 class Department {
 
-    name: string;
     department: string;
 
-    constructor(name: string, department: string) {
+    // * Private makes properties or methods ONLY accessible in the class, in this case, this makes our method the only way to modify this property
+    private employees: string[] = [];
 
-        this.name = name;
+    constructor(department: string) {
+
         this.department = department;
 
     }
 
     // * This is used to refer to data of instance of the class
-    // description() {
+    // describe() {
     //     console.log(`${this.name} works in ${this.department} department`);
     // }
 
     // *When excecuted, the this in method should ALWAYS refer to an instance of Department class
-    description(this: Department) {
-        console.log(`${this.name} works in ${this.department} department`);
+    describe(this: Department) {
+        console.log(`${this.department} department`);
+    }
+
+    addEmployee(employee: string) {
+        this.employees.push(employee);
+    }
+
+    printEmployeeInformation() {
+        console.log(this.employees.length)
+        console.log(this.employees)
     }
 
 }
 
-let Tony = new Department('Tony', 'Treasury');
-let Ryan = new Department('Ryan', 'Accounting');
-let Bill = new Department('Bill', 'Human Resources');
+let treasury = new Department('Treasury');
+let accounting = new Department('Accounting');
+
 
 // * this.name will be unuiqe for each instance
-Tony.description()
-Ryan.description()
-Bill.description()
+treasury.describe()
+accounting.describe()
+
+treasury.addEmployee('Ryan');
+treasury.addEmployee('Ray');
+treasury.printEmployeeInformation()
+
+
 
 // * If copy is missing expected properties with expected types, will be undefined because 'this' will not work on anything 
 // * that is not same 'type' as our class
-const TonyCopy = { name: 'Tony2', department: 'Boss', description: Tony.description }
-
-TonyCopy.description()
+// const treasurycopy = { department: 'Boss', describe: treasury.describe, }
+// treasurycopy.describe()
