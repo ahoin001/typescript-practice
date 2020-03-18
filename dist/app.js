@@ -26,6 +26,7 @@ class AccountDepartment extends Department {
     constructor(id, reports) {
         super(id, 'Accounting');
         this.reports = reports;
+        this.lastReport = reports[0];
     }
     addEmployee(name) {
         if (name == 'Alex') {
@@ -35,6 +36,19 @@ class AccountDepartment extends Department {
     }
     addReports(report) {
         this.reports.push(report);
+        this.lastReport = report;
+    }
+    get mostRecentReport() {
+        if (this.lastReport) {
+            return this.lastReport;
+        }
+        throw new Error('No report available');
+    }
+    set mostRecentReport(value) {
+        if (!value) {
+            console.log('Please provide a valid value');
+        }
+        this.addReports((value));
     }
     printReports() {
         console.log(`Reports: ${this.reports}`);
@@ -49,3 +63,6 @@ const Account = new AccountDepartment('F1', ['Alex']);
 Account.addEmployee('Alex');
 Account.addEmployee('Jeffery');
 Account.printEmployeeInformation();
+Account.mostRecentReport;
+Account.mostRecentReport = 'Weekly Report';
+console.log(Account);

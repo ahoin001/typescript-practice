@@ -53,10 +53,14 @@ class ITDepartment extends Department {
 
 class AccountDepartment extends Department {
 
+    private lastReport: string
+
     constructor(id: string, private reports: string[]) {
 
         // * Super MUST be called first and is constructor of base class 
         super(id, 'Accounting')
+
+        this.lastReport = reports[0]
 
     }
 
@@ -70,11 +74,35 @@ class AccountDepartment extends Department {
 
     addReports(report: string) {
         this.reports.push(report)
+        this.lastReport = report
+    }
+
+    // * To modify properties even when private
+    get mostRecentReport() {
+
+        if (this.lastReport) {
+            
+            return this.lastReport
+
+        }
+
+        throw new Error('No report available')
+
+    }
+    
+    set mostRecentReport(value: string) {
+
+        if (!value) {
+            console.log('Please provide a valid value')
+        }
+        this.addReports((value))
+
     }
 
     printReports() {
         console.log(`Reports: ${this.reports}`)
     }
+
 
 }
 
@@ -92,7 +120,10 @@ Account.addEmployee('Alex');
 Account.addEmployee('Jeffery');
 Account.printEmployeeInformation();
 
-
+// * GETTER/SETTER are excecuted as a property
+Account.mostRecentReport;
+Account.mostRecentReport = 'Weekly Report'
+console.log(Account)
 
 // ? Basic class examples
 // let treasury = new Department('D1', 'Treasury');
