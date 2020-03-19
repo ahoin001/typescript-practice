@@ -1,191 +1,46 @@
-// * Class is blueprint to create simalar objects with different information
+// ! Interface Only exists in typescript
+// ? Describes the object of a class to be it's own type
+// ? Interfaces can be impleted into a class , but custom types can not 
 
-// * Abstract classes used to be inherited from, while child classes are first to implement blueprint
-abstract class Department {
+interface Greetable {
 
-    // * Private makes properties or methods ONLY accessible in the class, in this case, this makes our method the only way to modify this property
-    // private employees: string[] = [];
+    name: string;
+    greet(phrase: string): void
 
-    // * Protected is like private, but allows access to classes that extend this class 
-    protected employees: string[] = [];
+}
+// ? Difference between Abstract and Interface , interface 
 
-    //  * Static property accessible wuthout creating an instance of class
-    static fiscalYear: number
+// * Implementing greetable forces class to have it's structure (properties and methods) defined
+class Person implements Greetable {
 
-    // * Shorthand to initialize properties by explicitly naming public or private
-    constructor(protected readonly id: string, public department: string, ) {
+    // * Must be implemented because of interface
+    name: string;
 
+    constructor(name: string, private age: number) {
+
+        this.name = name;
 
     }
 
-    // * This is used to refer to data of instance of the class
-    // describe() {
-    //     console.log(`${this.name} works in ${this.department} department`);
-    // }
-
-    // * When excecuted, the this in method should ALWAYS refer to an instance of Department class, TS will throw in other use cases
-    // * abstract class methods are created and forced to be override in child classes
-    abstract description(this: Department): void
-
-    // * Static methods can be used without creating instance of class
-    static createEmployee(name: string) {
-        return { name: name }
-    }
-
-    addEmployee(employee: string) {
-        this.employees.push(employee);
-    }
-
-    printEmployeeInformation() {
-        console.log(`${this.employees.length} employees in ${this.department} department`)
-        console.log(this.employees)
+    // * Must be implemented because of interface
+    greet(phrase: string) {
+        console.log(phrase + ` ${this.name} and I am ${this.age}`)
     }
 
 }
 
-// * Inheritance
-class ITDepartment extends Department {
+let user1: Greetable;
+// Will be error unless it gets the expected properties from interface
+user1 = {
 
-    admins: string[];
-    constructor(id: string, admins: string[]) {
-
-        // * Super MUST be called first and is constructor of base class 
-        super(id, 'IT')
-
-        this.admins = admins
-
-    }
-
-    // * Overwrite abstract method or TS will throw exception
-    description() {
-        console.log(`${this.department} - ID: ${this.id} `)
+    name: 'Alex',
+    greet(phrase: string) {
+        console.log(phrase + '' + this.name)
     }
 
 }
 
-class AccountDepartment extends Department {
 
-    private lastReport: string
-
-    // * An instance of the class
-    private static instance : AccountDepartment
-
-    // * Private constructors are used to only
-    private constructor(id: string, private reports: string[]) {
-
-        // * Super MUST be called first and is constructor of base class 
-        super(id, 'Accounting')
-
-        this.lastReport = reports[0]
-
-    }
-
-    // * Return instance already made or create new one, so only one instance can be made
-    static getInstance() {
-        if(AccountDepartment.instance)
-        {
-            return this.instance
-        }
-
-        this.instance = new AccountDepartment('A1',[])
-        return this.instance
-    }
-
-    description() {
-        console.log(`${this.department} - ID: ${this.id} `)
-    }
-
-    // * Override base class method for this specifc class
-    addEmployee(name: string) {
-        if (name == 'Alex') {
-            return
-        }
-        this.employees.push(name)
-    }
-
-    addReports(report: string) {
-        this.reports.push(report)
-        this.lastReport = report
-    }
-
-    // * To modify properties even when private
-    get mostRecentReport() {
-
-        if (this.lastReport) {
-
-            return this.lastReport
-
-        }
-
-        throw new Error('No report available')
-
-    }
-
-    set mostRecentReport(value: string) {
-
-        if (!value) {
-            console.log('Please provide a valid value')
-        }
-        this.addReports((value))
-
-    }
-
-    printReports() {
-        console.log(`Reports: ${this.reports}`)
-    }
-
-
-}
-
-// ? Inheritance examples
-const IT = new ITDepartment('F1', ['Alex'])
-
-IT.addEmployee('Gavin');
-IT.addEmployee('Chalres');
-IT.department = 'NEW NAME'
-IT.printEmployeeInformation();
-
-// ! Will not work while class has private constructor for singelton pattern
-// const Account = new AccountDepartment('A1', ['Alex'])
-
-// Account.addEmployee('Alex');
-// Account.addEmployee('Jeffery');
-// Account.printEmployeeInformation();
-
-// // * GETTER/SETTER are excecuted as a property
-// Account.mostRecentReport;
-// Account.mostRecentReport = 'Weekly Report'
-
-// ? Singleton Use
-const Account = AccountDepartment.getInstance()
-const Account2 = AccountDepartment.getInstance()
-
-// * Will bpth refer to the same instance
-console.log(Account,Account2)
-
-// * Static method 
-const anEmployee = Department.createEmployee('Stephen')
-console.log(anEmployee)
-
-
-
-// ? Basic class examples
-// let treasury = new Department('D1', 'Treasury');
-// let accounting = new Department('D2', 'Accounting');
-
-
-// * this.name will be unuiqe for each instance
-// treasury.describe()
-// accounting.describe()
-
-// treasury.addEmployee('Ryan');
-// treasury.addEmployee('Ray');
-// treasury.printEmployeeInformation()
-
-
-// * If copy is missing expected properties with expected types, will be undefined because 'this' will not work on anything 
-// * that is not same 'type' as our class
-// const treasurycopy = { department: 'Boss', describe: treasury.describe, }
-// treasurycopy.describe()
-
-
+user1 = new Person('Alex',24);
+console.log(user1)
+user1.greet('Hi there I am')

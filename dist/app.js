@@ -1,79 +1,20 @@
 "use strict";
-class Department {
-    constructor(id, department) {
-        this.id = id;
-        this.department = department;
-        this.employees = [];
+class Person {
+    constructor(name, age) {
+        this.age = age;
+        this.name = name;
     }
-    static createEmployee(name) {
-        return { name: name };
-    }
-    addEmployee(employee) {
-        this.employees.push(employee);
-    }
-    printEmployeeInformation() {
-        console.log(`${this.employees.length} employees in ${this.department} department`);
-        console.log(this.employees);
+    greet(phrase) {
+        console.log(phrase + ` ${this.name} and I am ${this.age}`);
     }
 }
-class ITDepartment extends Department {
-    constructor(id, admins) {
-        super(id, 'IT');
-        this.admins = admins;
+let user1;
+user1 = {
+    name: 'Alex',
+    greet(phrase) {
+        console.log(phrase + '' + this.name);
     }
-    description() {
-        console.log(`${this.department} - ID: ${this.id} `);
-    }
-}
-class AccountDepartment extends Department {
-    constructor(id, reports) {
-        super(id, 'Accounting');
-        this.reports = reports;
-        this.lastReport = reports[0];
-    }
-    static getInstance() {
-        if (AccountDepartment.instance) {
-            return this.instance;
-        }
-        this.instance = new AccountDepartment('A1', []);
-        return this.instance;
-    }
-    description() {
-        console.log(`${this.department} - ID: ${this.id} `);
-    }
-    addEmployee(name) {
-        if (name == 'Alex') {
-            return;
-        }
-        this.employees.push(name);
-    }
-    addReports(report) {
-        this.reports.push(report);
-        this.lastReport = report;
-    }
-    get mostRecentReport() {
-        if (this.lastReport) {
-            return this.lastReport;
-        }
-        throw new Error('No report available');
-    }
-    set mostRecentReport(value) {
-        if (!value) {
-            console.log('Please provide a valid value');
-        }
-        this.addReports((value));
-    }
-    printReports() {
-        console.log(`Reports: ${this.reports}`);
-    }
-}
-const IT = new ITDepartment('F1', ['Alex']);
-IT.addEmployee('Gavin');
-IT.addEmployee('Chalres');
-IT.department = 'NEW NAME';
-IT.printEmployeeInformation();
-const Account = AccountDepartment.getInstance();
-const Account2 = AccountDepartment.getInstance();
-console.log(Account, Account2);
-const anEmployee = Department.createEmployee('Stephen');
-console.log(anEmployee);
+};
+user1 = new Person('Alex', 24);
+console.log(user1);
+user1.greet('Hi there I am');
