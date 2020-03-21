@@ -30,6 +30,7 @@ let example: Universal = 23
 /****************************************************************
                     TYPE GUARD EXAMPLES 
 *****************************************************************/
+
 const addFunctionExample = (a: Combineable, b: Combineable) => {
 
     // * Typeguards Ex1: To ensure things with multiple type behave as expected
@@ -42,7 +43,6 @@ const addFunctionExample = (a: Combineable, b: Combineable) => {
     return a + b
 
 }
-
 
 type UnknownEmployee = Employee | Admin;
 
@@ -136,11 +136,109 @@ const moveAnimal = (animal: Animal) => {
 
         case 'horse':
             speed = animal.runningSpeed
-            
+
     }
 
     console.log(`${animal.type} is moving at speed : ${speed} `)
 
 }
 
-moveAnimal({type:'horse', runningSpeed: 30})
+moveAnimal({ type: 'horse', runningSpeed: 30 })
+
+// * Typecasting and '!' 
+
+/*********************************************
+
+    Typecasting and '!' ( Tells TS something will never return null)
+    Useful when wanting telling typescript what type we are getting back
+
+*********************************************/
+
+// ? TS can determine this is an htmlparagraph element
+const paragraph = document.querySelector('p')
+
+// ? TS cannot dive deeply into html file so it only knows it is an htmlelement
+const paragraph2 = document.getElementById('para')
+
+// * < > is Typecasting so TS knows to expect a specifc htmlelement, in this case htmlinputelement
+let userInputElement = <HTMLInputElement>document.getElementById('user-input')!
+
+// * If not sure that null will or won't occur, check manually'
+if (userInputElement) {
+    (userInputElement as HTMLInputElement).value = "Hi there, checked if it wasn't void"
+}
+
+// ? For JSX use 'as' keyword to typecast instead
+userInputElement = document.getElementById('user-input')! as HTMLInputElement
+
+
+
+userInputElement.value = 'Hi there friend !'
+
+
+/*********************************************
+
+            INDEX PROPERTIES
+USEFUL WHEN UNSURE OF PROPERTY TYPE OR HOW MANY PROPERTIES AN OBJECT WILL HAVE
+
+*********************************************/
+// ? Index Properties/Types 
+interface ErrorContainer {
+
+    // ? Don't know property name but the property will be a string, with value pf a string
+    // [key: string]: string
+    [key: number]: string
+
+}
+
+const errorBagExample: ErrorContainer = {
+
+    // ? Number is interpreted to string as property name
+    2: 'Wow this works when index property is sting or number',
+    // email: 'This only works when index property is string'
+
+}
+
+const errorBag: ErrorContainer = {
+
+    // ? Number is interpreted to string as property name
+    2: 'Wow this works when index property is sting or number',
+    // email: 'This only works when index property is string'
+
+}
+
+/*********************************************
+
+           FUNCTION OVERLOADS
+Useful for when function logic expects specific type, but parameters allow types that would not work
+
+*********************************************/
+
+// ? Combineable type was made above and is string | number
+
+// * Different parameter types that will let TS know what type will be returned
+function concatOrAdd(a: number, b: number) : number
+function concatOrAdd(a: string, b: string) : string
+function concatOrAdd(a: string, b: number) : string
+function concatOrAdd(a: number, b: string) : string
+
+function concatOrAdd(a: Combineable, b: Combineable) {
+    
+     // * Typeguards Ex1: To ensure things with multiple type behave as expected
+     if (typeof a === 'string' || typeof b === 'string') {
+
+        return a.toString() + b.toString()
+
+    }
+
+    return a + b
+
+}
+
+// ? Because TS knows two strings return a string, we can call a string method
+const result = concatOrAdd('3','3').split('');
+
+// ? Error because 2 numbers return number so string method wont work
+// const result2 = concatOrAdd(3,3).split('');
+
+

@@ -57,3 +57,11 @@ const moveAnimal = (animal) => {
     console.log(`${animal.type} is moving at speed : ${speed} `);
 };
 moveAnimal({ type: 'horse', runningSpeed: 30 });
+const paragraph = document.querySelector('p');
+const paragraph2 = document.getElementById('para');
+let userInputElement = document.getElementById('user-input');
+if (userInputElement) {
+    userInputElement.value = "Hi there, checked if it wasn't void";
+}
+userInputElement = document.getElementById('user-input');
+userInputElement.value = 'Hi there friend !';
