@@ -69,7 +69,7 @@ printEmployInfo(employeeExample)
 class Car {
 
     drive() {
-        console.log(`Driving...`)
+        console.log(`Driving car`)
     }
 
 }
@@ -77,7 +77,7 @@ class Car {
 class Truck {
 
     drive() {
-        console.log(`Driving...`)
+        console.log(`Driving Truck`)
     }
 
     loadCargo(amount: number) {
@@ -96,9 +96,51 @@ const useVehicle = (vehicle: Vehicle) => {
 
     // * TypeGuard Ex3/ Checks if object is instanceof Class
     if (vehicle instanceof Truck) {
-        
+
         // * Only truck class his this method, error occurs without a typeguard check
         vehicle.loadCargo(1000);
-    
+
     }
 }
+
+useVehicle(v1);
+useVehicle(v2);
+
+// * TypeGuard Ex4/ have a literal type that we can expect to be used 
+interface Bird {
+
+    // * Literal type so that this will be required in assignment 
+    type: 'bird';
+    flyingSpeed: number;
+}
+
+interface Horse {
+
+    type: 'horse';
+    runningSpeed: number;
+}
+
+type Animal = Bird | Horse;
+
+
+
+const moveAnimal = (animal: Animal) => {
+
+    // ? Can't use instance of because this is an interface
+    let speed;
+
+    switch (animal.type) {
+        case 'bird':
+            speed = animal.flyingSpeed
+            break;
+
+        case 'horse':
+            speed = animal.runningSpeed
+            
+    }
+
+    console.log(`${animal.type} is moving at speed : ${speed} `)
+
+}
+
+moveAnimal({type:'horse', runningSpeed: 30})

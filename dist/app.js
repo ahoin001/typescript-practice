@@ -22,3 +22,38 @@ const printEmployInfo = (emp) => {
     }
 };
 printEmployInfo(employeeExample);
+class Car {
+    drive() {
+        console.log(`Driving car`);
+    }
+}
+class Truck {
+    drive() {
+        console.log(`Driving Truck`);
+    }
+    loadCargo(amount) {
+        console.log(`Loading cargo... ${amount}`);
+    }
+}
+const v1 = new Car();
+const v2 = new Truck();
+const useVehicle = (vehicle) => {
+    vehicle.drive();
+    if (vehicle instanceof Truck) {
+        vehicle.loadCargo(1000);
+    }
+};
+useVehicle(v1);
+useVehicle(v2);
+const moveAnimal = (animal) => {
+    let speed;
+    switch (animal.type) {
+        case 'bird':
+            speed = animal.flyingSpeed;
+            break;
+        case 'horse':
+            speed = animal.runningSpeed;
+    }
+    console.log(`${animal.type} is moving at speed : ${speed} `);
+};
+moveAnimal({ type: 'horse', runningSpeed: 30 });
