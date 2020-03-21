@@ -1,279 +1,73 @@
-// Custom Types
-type Admin = {
-    name: string;
-    privileges: string[]
-};
+// https://www.typescriptlang.org/docs/handbook/generics.html
+/****************************************************************
+                          Generics
+ A type that is connected to other types. Example, Arryay is a type, but can be an array of strings type
+ *****************************************************************/
+// ? Hover will say this generic
+// const names: Array = []
 
-type Employee = {
-    name: string;
-    startDate: Date;
-};
+// * Needs to be specified what kind of type it will hold
+const names: Array<string> = []
 
-// ? Combine the two types of objects will expect all properties in both objects when creating one, Similar to interface
-type ElevatedEmployee = Admin & Employee;
+// ? resolve and reject are automatically passed 
+// * We can let TS knwo a string will be returned from this generic promise, so we have type safety when working with result
+const promise: Promise<string> = new Promise((resolve, reject) => {
 
-const employee: ElevatedEmployee = {
-    name: 'Alex',
-    privileges: ['create-server'],
-    startDate: new Date()
-}
+    setTimeout(() => {
 
-// * For Non object types, intersection types will be the common type, number in this case
-type Combineable = string | number;
-type Numeric = number | boolean;
+        resolve(`This is done!`)
 
-type Universal = Combineable & Numeric;
+    }, 2000);
 
-let example: Universal = 23
-// let example2: Universal = 'string will be error, number above works because it is intersection type'
+})
 
+promise.then(data => {
+
+    // * We specified a string willl be retuned so we can use a string method without worrying abuout issue
+    data.split('')
+
+})
 
 /****************************************************************
-                    TYPE GUARD EXAMPLES 
-*****************************************************************/
+                          GENERIC TYPES AND FUNCTIONS
+                        * Type Varibales are key of this lesson ( <T>)
 
-const addFunctionExample = (a: Combineable, b: Combineable) => {
+While using any is certainly generic in that it will cause the function to accept any and 
+all types for the type of arg, we actually are losing the information about what that type was when 
+the function returns. If we passed in a number, the only information we have is that any type could be returned.
 
-    // * Typeguards Ex1: To ensure things with multiple type behave as expected
-    if (typeof a === 'string' || typeof b === 'string') {
+ *****************************************************************/
 
-        return a.toString() + b.toString()
+// * If we put objects as the type, TS will be more strict Ex/
+// * it will allow us object methods BUT, will have error because object type doesnt know it's properties
+const merge = (objA: object, objB: object) => {
 
-    }
-
-    return a + b
-
-}
-
-type UnknownEmployee = Employee | Admin;
-
-// ? Combine the two types of objects will expect 1 of intersection type objects when using one, so name and date or name and privalege or name date and privalege
-const employeeExample: UnknownEmployee = { name: 'Alex', startDate: new Date() }
-
-const printEmployInfo = (emp: UnknownEmployee) => {
-
-    console.log('Name: ' + emp.name)
-
-    // * Typeguard Ex2: Because expected type may not have this property in emp (because intersection object type) Unknown employee may not have privaleges if it was passed an employee type
-    if (`privileges` in emp) {
-        console.log(`Privileges: ` + emp.privileges)
-    }
-
-    if (`startDate` in emp) {
-        console.log(`Start date: ` + emp.startDate)
-    }
+    // ? Copies properties from objects into another
+    return Object.assign(objA, objB)
 
 }
 
-printEmployInfo(employeeExample)
+console.log(merge({ name: 'Alex' }, { age: 22 }))
 
-class Car {
+const mergedObjA = merge({ name: 'Alex' }, { age: 22 })
 
-    drive() {
-        console.log(`Driving car`)
-    }
+// ? Hover for on container & will see mergedObj is an object type and thats it( because merge expected 2 obj type and returned an generic obj)
+// mergedObjA.age; 
 
-}
 
-class Truck {
+// * T & U are type vairables, when we don't know what the type will be
+// * TS will be less strict and see the types the user will provide, then return intersection of them
+// * Ex/ T = {name:alex} type. U = {age:  24} type  
+const genericMerge = <T,U>(objA: T, objB: U) => {
 
-    drive() {
-        console.log(`Driving Truck`)
-    }
-
-    loadCargo(amount: number) {
-        console.log(`Loading cargo... ${amount}`)
-    }
+    // ? Copies properties from objects into another
+    // TS will see generic variables and know 
+    return Object.assign(objA, objB)
 
 }
 
-type Vehicle = Car | Truck;
-const v1 = new Car()
-const v2 = new Truck()
-
-const useVehicle = (vehicle: Vehicle) => {
-
-    vehicle.drive();
-
-    // * TypeGuard Ex3/ Checks if object is instanceof Class
-    if (vehicle instanceof Truck) {
-
-        // * Only truck class his this method, error occurs without a typeguard check
-        vehicle.loadCargo(1000);
-
-    }
-}
-
-useVehicle(v1);
-useVehicle(v2);
-
-// * TypeGuard Ex4/ have a literal type that we can expect to be used 
-interface Bird {
-
-    // * Literal type so that this will be required in assignment 
-    type: 'bird';
-    flyingSpeed: number;
-}
-
-interface Horse {
-
-    type: 'horse';
-    runningSpeed: number;
-}
-
-type Animal = Bird | Horse;
-
-
-
-const moveAnimal = (animal: Animal) => {
-
-    // ? Can't use instance of because this is an interface
-    let speed;
-
-    switch (animal.type) {
-        case 'bird':
-            speed = animal.flyingSpeed
-            break;
-
-        case 'horse':
-            speed = animal.runningSpeed
-
-    }
-
-    console.log(`${animal.type} is moving at speed : ${speed} `)
-
-}
-
-moveAnimal({ type: 'horse', runningSpeed: 30 })
-
-// * Typecasting and '!' 
-
-/*********************************************
-
-    Typecasting and '!' ( Tells TS something will never return null)
-    Useful when wanting telling typescript what type we are getting back
-
-*********************************************/
-
-// ? TS can determine this is an htmlparagraph element
-const paragraph = document.querySelector('p')
-
-// ? TS cannot dive deeply into html file so it only knows it is an htmlelement
-const paragraph2 = document.getElementById('para')
-
-// * < > is Typecasting so TS knows to expect a specifc htmlelement, in this case htmlinputelement
-let userInputElement = <HTMLInputElement>document.getElementById('user-input')!
-
-// * If not sure that null will or won't occur, check manually'
-if (userInputElement) {
-    (userInputElement as HTMLInputElement).value = "Hi there, checked if it wasn't void"
-}
-
-// ? For JSX use 'as' keyword to typecast instead
-userInputElement = document.getElementById('user-input')! as HTMLInputElement
-
-
-
-userInputElement.value = 'Hi there friend !'
-
-
-/*********************************************
-
-            INDEX PROPERTIES
-USEFUL WHEN UNSURE OF PROPERTY TYPE OR HOW MANY PROPERTIES AN OBJECT WILL HAVE
-
-*********************************************/
-// ? Index Properties/Types 
-interface ErrorContainer {
-
-    // ? Don't know property name but the property will be a string, with value pf a string
-    // [key: string]: string
-    [key: number]: string
-
-}
-
-const errorBagExample: ErrorContainer = {
-
-    // ? Number is interpreted to string as property name
-    2: 'Wow this works when index property is sting or number',
-    // email: 'This only works when index property is string'
-
-}
-
-const errorBag: ErrorContainer = {
-
-    // ? Number is interpreted to string as property name
-    2: 'Wow this works when index property is sting or number',
-    // email: 'This only works when index property is string'
-
-}
-
-/*********************************************
-
-           FUNCTION OVERLOADS
-Useful for when function logic expects specific type, but parameters allow types that would not work
-
-*********************************************/
-
-// ? Combineable type was made above and is string | number
-
-// * Different parameter types that will let TS know what type will be returned
-function concatOrAdd(a: number, b: number) : number
-function concatOrAdd(a: string, b: string) : string
-function concatOrAdd(a: string, b: number) : string
-function concatOrAdd(a: number, b: string) : string
-
-function concatOrAdd(a: Combineable, b: Combineable) {
-    
-     // * Typeguards Ex1: To ensure things with multiple type behave as expected
-     if (typeof a === 'string' || typeof b === 'string') {
-
-        return a.toString() + b.toString()
-
-    }
-
-    return a + b
-
-}
-
-// ? Because TS knows two strings return a string, we can call a string method
-const result = concatOrAdd('3','3').split('');
-
-// ? Error because 2 numbers return number so string method wont work
-// const result2 = concatOrAdd(3,3).split('');
-
-/*********************************************
-
-           OPTIONAL CHAINING
-Useful for api calls or/and retriving non guarenteed data this is useful
-
-*********************************************/
-
-const fetchedUserData = {
-    id: 'u1',
-    name: 'Alex',
-
-    // ? TS can see this doesn't exist, but for api calls or retriving non guarenteed data this is useful
-    job: {title: 'CEO', description: 'My Room Inc'}
-
-}
-
-// ? In TS, '?' will have TS check if whats before it exsists before going to next level
-console.log(fetchedUserData?.job?.title)
-
-// * In JS this is how to return something if it exsists
-console.log(fetchedUserData.job && fetchedUserData.job.title)
-
-
-/*********************************************
-
-           NULLISH COALESCING
-Useful for needing to return a defualt value if something is null or undefined
-
-*********************************************/
-const auserInput = '';
-
-// ? '??' means if null or undefined, return what is left of compare
-const storedData = auserInput ?? 'DEFAULT'
-
-console.log(storedData)
+// ? Can make the objects have whatever we want since they can be anything
+console.log(genericMerge({ name: 'Alex' }, { age: 24 , hobby:'Coding'}))
+
+const mergedGenericObj = genericMerge({ name: 'Alex' }, { age: 24 , hobby:'Coding'})
+mergedGenericObj.age;
