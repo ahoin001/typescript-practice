@@ -19,3 +19,9 @@ const genericMerge = (objA, objB) => {
 console.log(genericMerge({ name: 'Alex' }, { age: 24, hobby: 'Coding' }));
 const mergedGenericObj = genericMerge({ name: 'Alex' }, { age: 24, hobby: 'Coding' });
 mergedGenericObj.age;
+const genericConstraintMerge = (objA, objB) => {
+    return Object.assign(objA, objB);
+};
+console.log(genericConstraintMerge({ name: 'Alex' }, { age: 24, hobby: 'Coding' }));
+const mergedGenericConstrinedObj = genericConstraintMerge({ name: 'Alex' }, { age: 24, hobby: 'Coding' });
+mergedGenericConstrinedObj.age;

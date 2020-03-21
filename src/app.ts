@@ -29,8 +29,9 @@ promise.then(data => {
 })
 
 /****************************************************************
-                          GENERIC TYPES AND FUNCTIONS
-                        * Type Varibales are key of this lesson ( <T>)
+                          
+                    GENERIC TYPES AND FUNCTIONS
+            * Type Varibales are key of this lesson ( <T>)
 
 While using any is certainly generic in that it will cause the function to accept any and 
 all types for the type of arg, we actually are losing the information about what that type was when 
@@ -58,7 +59,7 @@ const mergedObjA = merge({ name: 'Alex' }, { age: 22 })
 // * T & U are type vairables, when we don't know what the type will be
 // * TS will be less strict and see the types the user will provide, then return intersection of them
 // * Ex/ T = {name:alex} type. U = {age:  24} type  
-const genericMerge = <T,U>(objA: T, objB: U) => {
+const genericMerge = <T, U>(objA: T, objB: U) => {
 
     // ? Copies properties from objects into another
     // TS will see generic variables and know 
@@ -67,7 +68,32 @@ const genericMerge = <T,U>(objA: T, objB: U) => {
 }
 
 // ? Can make the objects have whatever we want since they can be anything
-console.log(genericMerge({ name: 'Alex' }, { age: 24 , hobby:'Coding'}))
+console.log(genericMerge({ name: 'Alex' }, { age: 24, hobby: 'Coding' }))
 
-const mergedGenericObj = genericMerge({ name: 'Alex' }, { age: 24 , hobby:'Coding'})
+const mergedGenericObj = genericMerge({ name: 'Alex' }, { age: 24, hobby: 'Coding' })
 mergedGenericObj.age;
+
+/****************************************************************
+                          Generics Constraints
+ A type that is connected to other types. Example, Arryay is a type, but can be an array of strings type
+ *****************************************************************/
+
+// * T & U are type vairables, and can expect anything
+// * However this means it can be a string number or object 
+// * With extends, we can constrain our variable to a certain type or union type
+
+// ? Extending objects will let TS know these parameters should at least be objects
+const genericConstraintMerge = <T extends object, U extends object>(objA: T, objB: U) => {
+
+    // ? Copies properties from objects into another
+    // TS will see generic variables and know 
+    return Object.assign(objA, objB)
+
+}
+
+// ? Can make the objects have whatever we want since they can be anything
+console.log(genericConstraintMerge({ name: 'Alex' }, { age: 24, hobby: 'Coding' }))
+// console.log(genericConstraintMerge({ name: 'Alex' }, 24)) will yield error because not an object 
+
+const mergedGenericConstrinedObj = genericConstraintMerge({ name: 'Alex' }, { age: 24, hobby: 'Coding' })
+mergedGenericConstrinedObj.age;
