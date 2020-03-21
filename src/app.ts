@@ -241,4 +241,24 @@ const result = concatOrAdd('3','3').split('');
 // ? Error because 2 numbers return number so string method wont work
 // const result2 = concatOrAdd(3,3).split('');
 
+/*********************************************
+
+           OPTIONAL CHAINING
+Useful for api calls or/and retriving non guarenteed data this is useful
+
+*********************************************/
+
+const fetchedUserData = {
+    id: 'u1',
+    name: 'Alex',
+    // ? TS can see this doesn't exist, but for api calls or retriving non guarenteed data this is useful
+    // job: {title: 'CEO', description: 'My Room Inc'}
+
+}
+
+// ? In TS, '?' will have TS check if whats before it exsists before going to next level
+console.log(fetchedUserData?.job?.title)
+
+// * In JS this is how to return something if it exsists
+console.log(fetchedUserData.job && fetchedUserData.job.title)
 
