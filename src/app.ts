@@ -65,3 +65,40 @@ const printEmployInfo = (emp: UnknownEmployee) => {
 }
 
 printEmployInfo(employeeExample)
+
+class Car {
+
+    drive() {
+        console.log(`Driving...`)
+    }
+
+}
+
+class Truck {
+
+    drive() {
+        console.log(`Driving...`)
+    }
+
+    loadCargo(amount: number) {
+        console.log(`Loading cargo... ${amount}`)
+    }
+
+}
+
+type Vehicle = Car | Truck;
+const v1 = new Car()
+const v2 = new Truck()
+
+const useVehicle = (vehicle: Vehicle) => {
+
+    vehicle.drive();
+
+    // * TypeGuard Ex3/ Checks if object is instanceof Class
+    if (vehicle instanceof Truck) {
+        
+        // * Only truck class his this method, error occurs without a typeguard check
+        vehicle.loadCargo(1000);
+    
+    }
+}
