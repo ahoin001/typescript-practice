@@ -1,3 +1,4 @@
+// Custom Types
 type Admin = {
     name: string;
     privileges: string[]
@@ -17,7 +18,7 @@ const employee: ElevatedEmployee = {
     startDate: new Date()
 }
 
-// * Non object types, intersection types will be the common type, number in this case
+// * For Non object types, intersection types will be the common type, number in this case
 type Combineable = string | number;
 type Numeric = number | boolean;
 
@@ -251,8 +252,9 @@ Useful for api calls or/and retriving non guarenteed data this is useful
 const fetchedUserData = {
     id: 'u1',
     name: 'Alex',
+
     // ? TS can see this doesn't exist, but for api calls or retriving non guarenteed data this is useful
-    // job: {title: 'CEO', description: 'My Room Inc'}
+    job: {title: 'CEO', description: 'My Room Inc'}
 
 }
 
@@ -262,3 +264,16 @@ console.log(fetchedUserData?.job?.title)
 // * In JS this is how to return something if it exsists
 console.log(fetchedUserData.job && fetchedUserData.job.title)
 
+
+/*********************************************
+
+           NULLISH COALESCING
+Useful for needing to return a defualt value if something is null or undefined
+
+*********************************************/
+const auserInput = '';
+
+// ? '??' means if null or undefined, return what is left of compare
+const storedData = auserInput ?? 'DEFAULT'
+
+console.log(storedData)
