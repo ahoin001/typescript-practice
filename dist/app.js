@@ -23,8 +23,8 @@ const genericConstraintMerge = (objA, objB) => {
     return Object.assign(objA, objB);
 };
 console.log(genericConstraintMerge({ name: 'Alex' }, { age: 24, hobby: 'Coding' }));
-const mergedGenericConstrinedObj = genericConstraintMerge({ name: 'Alex' }, { age: 24, hobby: 'Coding' });
-mergedGenericConstrinedObj.age;
+const mergedGenericConstrainedObj = genericConstraintMerge({ name: 'Alex' }, { age: 24, hobby: 'Coding' });
+mergedGenericConstrainedObj.age;
 const countAndPrint = (element) => {
     let descriptionText = 'Got no value';
     if (element.length === 1) {
@@ -35,11 +35,12 @@ const countAndPrint = (element) => {
     }
     return [element, descriptionText];
 };
-console.log(countAndPrint('H'));
+console.log(countAndPrint(['d']));
+console.log(countAndPrint('Log above used array, since it has length property it worked in fucntion'));
 const extractAndConvert = (obj, key) => {
     return `Value: ${obj[key]}`;
 };
-console.log(extractAndConvert({ name: 'Alex' }, name));
+console.log(extractAndConvert({ name: 'Alex (From extractandConvert Example' }, 'name'));
 class DataStorage {
     constructor() {
         this.data = [];
@@ -67,3 +68,16 @@ numberStorage.addItem(24);
 numberStorage.addItem(3);
 numberStorage.removeItem(3);
 console.log(numberStorage.getItems());
+const createCourseGoal = (title, description, date) => {
+    let courseGoal = {};
+    courseGoal.title = title;
+    courseGoal.description = description;
+    courseGoal.completeUntil = date;
+    return courseGoal;
+};
+const listNames = ['Alex', 'Alexis'];
+names.push('Alex');
+const todo = {
+    title: 'Clean room',
+    completed: false,
+};

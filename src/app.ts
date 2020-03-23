@@ -1,7 +1,18 @@
 // https://www.typescriptlang.org/docs/handbook/generics.html
 
+
 /****************************************************************
-        Generic Classes, Generic FUnctions, keyof object constraint,
+    
+    Generic v Union
+    - Use Union when it's okay to accept different type with every method or function call
+    - Use Generics to lock in a type for use 
+
+ *****************************************************************/
+
+
+
+/****************************************************************
+        Covers : Generic Classes, Generic Functions, keyof object constraint,
                 Class Constraints
 
  *****************************************************************/
@@ -10,14 +21,14 @@
                           Generics
  A type that is connected to other types. Example, Arryay is a type, but can be an array of strings type
  *****************************************************************/
-// ? Hover will say this generic
+// ? Hover will say this generic and requires type argument
 // const names: Array = []
 
-// * Needs to be specified what kind of type it will hold
+// * Specified what kind of type it will hold
 const names: Array<string> = []
 
 // ? resolve and reject are automatically passed 
-// * We can let TS knwo a string will be returned from this generic promise, so we have type safety when working with result
+// * We can let TS know a string will be returned from this generic promise, so we have type safety when working with result
 const promise: Promise<string> = new Promise((resolve, reject) => {
 
     setTimeout(() => {
@@ -46,7 +57,8 @@ the function returns. If we passed in a number, the only information we have is 
 
  *****************************************************************/
 
-// * If we put objects as the type, TS will be more strict Ex/
+// * If we put objects as the type, hover over merge and see it returns plain obj type 
+//TS will be more strict Ex/
 // * it will allow us object methods BUT, will have error because object type doesnt know it's properties
 const merge = (objA: object, objB: object) => {
 
@@ -59,13 +71,15 @@ console.log(merge({ name: 'Alex' }, { age: 22 }))
 
 const mergedObjA = merge({ name: 'Alex' }, { age: 22 })
 
-// ? Hover for on container & will see mergedObj is an object type and thats it( because merge expected 2 obj type and returned an generic obj)
+// ? Hover & will see mergedObj is an plain object type and that it does not conatain age property( because merge expected 2 obj type and returned an generic obj)
 // mergedObjA.age; 
 
 
 // * T & U are type vairables, when we don't know what the type will be
-// * TS will be less strict and see the types the user will provide, then return intersection of them
-// * Ex/ T = {name:alex} type. U = {age:  24} type  
+// * TS will be less strict and see the types the user will provide, in this case returns intersection of 2 objects we will provide
+// * Ex/ T = {name:alex} type & U = {age:  24} type  
+// ? Main issue is this means we can pass type and TS would not know it wouldn't work in logic, in this case we might pass a string but it wwould fail at our object method
+
 const genericMerge = <T, U>(objA: T, objB: U) => {
 
     // ? Copies properties from objects into another
@@ -74,41 +88,39 @@ const genericMerge = <T, U>(objA: T, objB: U) => {
 
 }
 
-// ? Can make the objects have whatever we want since they can be anything
+// ? Custom objects will be treated as their own type of object and returned as intersection of types because of object.assign
 console.log(genericMerge({ name: 'Alex' }, { age: 24, hobby: 'Coding' }))
 
-const mergedGenericObj = genericMerge({ name: 'Alex' }, { age: 24, hobby: 'Coding' })
+const mergedGenericObj = genericMerge({name:'Alex'}, { age: 24, hobby: 'Coding' })
 mergedGenericObj.age;
 
 /****************************************************************
                           Generics Constraints
- A type that is connected to other types. Example, Arryay is a type, but can be an array of strings type
+// * With extends, we can constrain our parameter to a certain type or union type 
  *****************************************************************/
 
-// * T & U are type vairables, and can expect anything
+// * T & U are type vairables, and can expect any type
 // * However this means it can be a string number or object 
-// * With extends, we can constrain our variable to a certain type or union type 
-
-// ? Extending objects will let TS know these parameters should at least be objects
+// ? Extending object type will let TS know these parameters should at least be object types 
 const genericConstraintMerge = <T extends object, U extends object>(objA: T, objB: U) => {
 
-    // ? Copies properties from objects into another
-    // TS will see generic variables and know 
+    // ? We now have guarenteed obja and objb will be objects
     return Object.assign(objA, objB)
 
 }
 
-// ? Can make the objects have whatever we want since they can be anything
+// ? Can make arguments anything as long as they are objects
 console.log(genericConstraintMerge({ name: 'Alex' }, { age: 24, hobby: 'Coding' }))
-// console.log(genericConstraintMerge({ name: 'Alex' }, 24)) will yield error because not an object 
+// console.log(genericConstraintMerge({ name: 'Alex' }, 24)) will yield error because 24 not an object 
 
-const mergedGenericConstrinedObj = genericConstraintMerge({ name: 'Alex' }, { age: 24, hobby: 'Coding' })
-mergedGenericConstrinedObj.age;
+const mergedGenericConstrainedObj = genericConstraintMerge({ name: 'Alex' }, { age: 24, hobby: 'Coding' })
+mergedGenericConstrainedObj.age;
 
 
 /****************************************************************
                           another Generic function
  A flexible function that lets TS expect certain methods to be available
+ - Union v Generic : Generic Allows more flexibility than explicitly saying to expect string | array | othertypes
  *****************************************************************/
 
 //  ? We can extend this interface, so our cusom type will be expected to have a length property
@@ -119,8 +131,9 @@ interface Lengthy {
 
 }
 
-// * Explicitly return a tuple of [T, string] for the example
-// * Allows more flexibility than explicitly saying to expect string | array | othertypes
+// * Explicitly return a tuple of [T, string] just for the example but could be anything
+// * Above we extend objects, but interfaces can also be extended for properties that we expect to include and use
+// ? In this case, we know we will return an array so we know length property will be available, so a string or array would make it into function
 const countAndPrint = <T extends Lengthy>(element: T): [T, string] => {
 
     let descriptionText = 'Got no value';
@@ -142,7 +155,8 @@ const countAndPrint = <T extends Lengthy>(element: T): [T, string] => {
 }
 
 // ? Will be able to expect String or Array because our T will be expected to have length property
-console.log(countAndPrint('H'))
+console.log(countAndPrint(['d']))
+console.log(countAndPrint('Log above used array, since it has length property it worked in fucntion'))
 
 
 /****************************************************************
@@ -158,16 +172,19 @@ const extractAndConvert = <T extends object, U extends keyof T>(obj: T, key: U) 
 }
 
 // * Useful to prevent accessing property in an object that
-console.log(extractAndConvert({ name: 'Alex' }, name))
+console.log(extractAndConvert({ name: 'Alex (From extractandConvert Example' }, 'name'))
 
 /****************************************************************
                 Generic Classes
-                Class Constraints
+                Class Constraints and Type safety
+                Using constraint, we will have flexibility with chosen constraints 
+                and type support in our class for those types
 
  *****************************************************************/
 
-//  * We use T to be able to push any kind of data type
-class DataStorage<T extends string| number | boolean >{
+//  * We use T in class to be able to accept any kind of data type, but specifiy it will be string number or boolean in this case
+// * When class is called, the type wll be given
+class DataStorage<T extends string | number | boolean>{
 
     // * Error because we haven't specified what data is being stored
     // private data = []
@@ -195,6 +212,34 @@ class DataStorage<T extends string| number | boolean >{
 
 }
 
+// ? Same as above but using union instead of generic
+// ? Issue is that instead of using type that was passed in, class would allow all 3 of these types
+// class DataStorageUnion{
+
+//     // ? Union type would allow any of these types thorugh each method call 
+//     // *Generic type would initialize with EXACT type we select, and only allow that type (Check above type)
+//     private data: string[] | number[] | boolean[] = []
+
+//     addItem = (item: string | number | boolean) => {
+//         this.data.push(item)
+//     }
+
+//     removeItem = (item: string | number | boolean) => {
+
+//         // * index of returns -1 if nothing found
+//         if (this.data.indexOf(item) === -1) {
+//             return
+//         }
+//         this.data.splice(this.data.indexOf(item), 1)
+//     }
+
+//     getItems = () => {
+//         return [...this.data]
+//     }
+
+
+// }
+
 // ? new Class with string type expected in T for class blueprint (above) So TS will know what to expect
 const textStorage = new DataStorage<string>()
 textStorage.addItem('Alex')
@@ -202,10 +247,63 @@ textStorage.addItem('Bill')
 textStorage.removeItem('Bill')
 console.log(textStorage.getItems())
 
-// * NOTE Class logic does not work well for objects, this is just example that object 
 const numberStorage = new DataStorage<number>()
 numberStorage.addItem(24)
 numberStorage.addItem(3)
 // numberStorage.addItem({'Will be error since number is expected not string'})
 numberStorage.removeItem(3)
 console.log(numberStorage.getItems())
+
+/****************************************************************
+ 
+https://www.typescriptlang.org/docs/handbook/utility-types.html                
+Generic Utility Types ( All generic: Take a value of any tye and do something with it )
+- Provide extra control and transformations over types
+
+ *****************************************************************/
+
+interface CourseGoal {
+    title: string;
+    description: string;
+    completeUntil: Date;
+}
+
+const createCourseGoal = (title: string, description: string, date: Date): CourseGoal => {
+
+    // * Partial lets TS know the type does not have expected properties initially but will 
+    let courseGoal: Partial<CourseGoal> = {};
+
+    // *Would be error since empty object does not satisfy type properties
+    // let courseGoalex: CourseGoal = {};
+
+    courseGoal.title = title;
+    courseGoal.description = description;
+    courseGoal.completeUntil = date
+
+    // Would be error because Partial is not CourseGoal type we are expecting
+    // return courseGoal;
+
+    // ? TypeCast partial back to CourseGoal type to satisfy return , since we know we will have the expected properties
+    return courseGoal as CourseGoal;
+
+}
+
+
+// * Readonly type to make sure a type we have is only readonly on object or array etc
+const listNames: Readonly<string[]> = ['Alex', 'Alexis']
+names.push('Alex')
+
+// * Omit : create a type by picking all properties from one type, but removing selected properties
+interface Todo {
+    title: string;
+    description: string;
+    completed: boolean;
+}
+
+type TodoPreview = Omit<Todo, 'description'>;
+
+const todo: TodoPreview = {
+    title: 'Clean room',
+    completed: false,
+}
+
