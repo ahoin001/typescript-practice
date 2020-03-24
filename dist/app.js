@@ -11,6 +11,16 @@ const Logger = (logString) => {
         console.log(`Constructor ` + constructor);
     };
 };
+const WithTemplate = (template, hookId) => {
+    return (constructor) => {
+        const hookEl = document.getElementById(hookId);
+        const p = new constructor();
+        if (hookEl) {
+            hookEl.innerHTML = template;
+            hookEl.querySelector('h1').textContent = p.name;
+        }
+    };
+};
 let PersonBluePrint = class PersonBluePrint {
     constructor() {
         this.name = 'Alex';
@@ -18,7 +28,7 @@ let PersonBluePrint = class PersonBluePrint {
     }
 };
 PersonBluePrint = __decorate([
-    Logger('LOGGING IN PERSON')
+    WithTemplate('<h1>The Person Object</h1>', 'app')
 ], PersonBluePrint);
 const aPerson = new PersonBluePrint();
 console.log(aPerson);
